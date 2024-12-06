@@ -639,7 +639,7 @@ class CI_URI {
 	 */
 	public function ruri_string()
 	{
-		return ltrim(load_class('Router', 'core')->directory, '/').implode('/', $this->rsegments);
+		return ltrim(load_class('Router', 'core')->directory ?? '', '/').implode('/', $this->rsegments);
 	}
 
 }
