@@ -613,6 +613,27 @@ class CI_Output {
 
 		$expire = time() + ($this->cache_expiration * 60);
 
+		// =================================================================
+		// START OF MODIFICATION
+		// =================================================================
+
+		// Filter out any 'Set-Cookie' headers before caching them.
+		// This prevents user-specific session cookies from being cached
+		// and served to other users.
+		$headers_to_cache = [];
+		foreach ($this->headers as $header)
+		{
+			// strncasecmp is a case-insensitive check for the start of the string
+			if (isset($header[0]) && strncasecmp($header[0], 'Set-Cookie:', 11) !== 0)
+			{
+				$headers_to_cache[] = $header;
+			}
+		}
+
+		// =================================================================
+		// END OF MODIFICATION
+		// =================================================================
+
 		// Put together our serialized info.
 		$cache_info = serialize(array(
 			'expire'	=> $expire,

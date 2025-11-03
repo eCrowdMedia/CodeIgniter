@@ -54,14 +54,15 @@ class CI_Cache extends CI_Driver_Library {
 	 *
 	 * @var array
 	 */
-	protected $valid_drivers = array(
+	protected $valid_drivers = [
 		'apc',
 		'dummy',
 		'file',
 		'memcached',
 		'redis',
-		'wincache'
-	);
+		'wincache',
+        's3',
+	];
 
 	/**
 	 * Path of cache files (if file-based cache)
@@ -138,6 +139,23 @@ class CI_Cache extends CI_Driver_Library {
 	{
 		return $this->{$this->_adapter}->get($this->key_prefix.$id);
 	}
+
+	// ------------------------------------------------------------------------
+
+    /**
+     * mGet
+     *
+     * Look for values in the cache. If it exists, return the data
+     * if not, return FALSE
+     *
+     * @param   array  $ids
+     * @return  mixed   value matching $id or FALSE on failure
+     */
+    public function mget(array $ids)
+    {
+        $ids = array_map(fn ($id) => $this->key_prefix.$id, $ids);
+        return $this->{$this->_adapter}->mget($ids);
+    }
 
 	// ------------------------------------------------------------------------
 
