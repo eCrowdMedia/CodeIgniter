@@ -637,7 +637,7 @@ class CI_Output {
 		// Put together our serialized info.
 		$cache_info = serialize(array(
 			'expire'	=> $expire,
-			'headers'	=> $this->headers
+			'headers'	=> $headers_to_cache // Use the filtered headers
 		));
 
 		$output = $cache_info.'ENDCI--->'.$output;
